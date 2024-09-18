@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于金融知识图谱的知识计算引擎</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/nifty.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/nifty-demo-icons.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/nifty-demo.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/wiki.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/pace.min.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/pace.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-2.2.4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nifty.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/icons.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nifty-demo.min.js') }}"></script>
+</head>
+<body>
+    <div id="container" class="effect aside-float aside-bright mainnav-lg">
+        <header id="navbar">
+            <div id="navbar-container" class="boxed">
+                <div class="navbar-header">
+                    <a href="{{ url_for('home') }}" class="navbar-brand">
+                        <img src="{{ url_for('static', filename='images/北邮LOGO.png') }}" alt="Nifty Logo" class="brand-icon">
+                        <div class="brand-title">
+                            <span class="brand-text">陈学楷研创</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="navbar-content clearfix">
+                    <ul class="nav navbar-top-links pull-left">
+                        <li class="tgl-menu-btn">
+                            <a class="mainnav-toggle" href="#">
+                                <i class="demo-pli-view-list"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-top-links pull-left">
+                        <h4>基于金融知识图谱的知识计算引擎构建</h4>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <div class="boxed">
+            <div id="content-container">
+                <div id="page-content">
+                    <h4 class="text-main pad-btm bord-btm">对话系统</h4>
+                    <div id="col-l" style="margin-bottom: 0;">
+                        <div class="col-l-t" style="height: 625px;">
+                            <div class="content">
+                                <div class="bubble" id="Chat">
+                                    <div class="msg clearfix">
+                                        <div class="user-assistant"></div>
+                                        <span class="triangle"></span>
+                                        <div class="article">
+                                            <p>您好，我是金融问答助手。</p>
+                                            <p>欢迎使用金融知识图谱知识计算引擎，有什么股票方面的问题可以问我哦。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-l-b">
+                            <div class="faq-input-content">
+                                <label for="talkcontent"></label>
+                                <textarea name="question" class="input" id="talkcontent" placeholder="请输入你的问题(eg.宁德时代的股东是谁？)" autocomplete="off"></textarea>
+                                <button id="sendbtn" class="btn">发送</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer id="footer" style="margin-bottom: 0px;">
+            <p class="pad-lft">Copyright&#0169; 2022 陈学楷  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;All Rights Reserved </p>
+        </footer>
+        <button class="scroll-top btn">
+            <i class="pci-chevron chevron-up"></i>
+        </button>
+    </div>
+    <script type="text/javascript">
+    window.onload = function(){
+        var input = document.getElementById('talkcontent');
+        document.getElementById('sendbtn').onclick = function (){
+            ChatSendClient();
+        }
+    }
+    $(document).keypress(function (e) {
+        if (e.which === 13) {
+            ChatSendClient();
+            event.returnValue = false;
+        }
+    });
+    function ChatSendClient(){
+        var text = $('#talkcontent').val(),
+            $msgbox = $('#Chat'),
+            sMesContent = '',
+            aMesContent = '';
+        if (text === ''){
+            alert('请输入内容');
+            return;
+        } else {
+            sMesContent = '<div class="msg fr"><span class="triangle right"></span><div class="article">' + text + '</div></div>';
+            $msgbox.html($msgbox.html() + sMesContent);
+            document.getElementById("talkcontent").value = "";
+            $('.col-l-t').animate({ scrollTop: document.getElementById('Chat').scrollHeight + 'px' });
+
+            $.getJSON('/dialogue_answer', {
+                name: text,
+            }, function (result) {
+                aMesContent = '<div class="msg clearfix"><div class="user-assistant"></div><span class="triangle right"></span><div class="article">' + result.data.replace("\n","<br>") + '</div></div>';
+                $msgbox.html($msgbox.html() + aMesContent);
+                $('.col-l-t').animate({ scrollTop: document.getElementById('Chat').scrollHeight + 'px' });
+            });
+        }
+    }
+    </script>
+</body>
+</html>

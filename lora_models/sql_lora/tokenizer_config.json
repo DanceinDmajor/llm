@@ -1,0 +1,19 @@
+{
+  "added_tokens_decoder": {},
+  "additional_special_tokens": [
+    "<|im_end|>"
+  ],
+  "auto_map": {
+    "AutoTokenizer": [
+      "tokenization_qwen.QWenTokenizer",
+      null
+    ]
+  },
+  "clean_up_tokenization_spaces": true,
+  "eos_token": "<|endoftext|>",
+  "model_max_length": 16384,
+  "pad_token": "<|endoftext|>",
+  "padding_side": "right",
+  "split_special_tokens": false,
+  "tokenizer_class": "QWenTokenizer"
+}
