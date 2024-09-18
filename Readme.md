@@ -38,4 +38,5 @@ model_dir = snapshot_download('TongyiFinance/Tongyi-Finance-14B-Chat', cache_dir
 ```
 
 
-
+**工作流图**
+![B0CBB981152F9FDC6D3B66529A738CC9.png](B0CBB981152F9FDC6D3B66529A738CC9.png)
